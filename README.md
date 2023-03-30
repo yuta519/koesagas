@@ -1,9 +1,7 @@
 # KoeSagas
 
 ## Getting Started
-
 1. Setting API Key of Algoria
-
 2. Run the command
 
 ```bash
