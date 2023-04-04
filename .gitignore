@@ -44,3 +44,4 @@ next-env.d.ts
 .venv
 *.txt
 *.mp3
+.mypy_cache
