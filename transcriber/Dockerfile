@@ -3,5 +3,5 @@ FROM python:3.10-slim
 RUN apt update
 RUN apt install -y ffmpeg
 RUN pip install setuptools-rust
-RUN pip install -U openai-whisper
+RUN pip install openai-whisper
 RUN pip install algoliasearch
