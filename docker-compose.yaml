@@ -39,7 +39,7 @@ services:
     container_name: app
     command: sh -c "npm run dev"
     ports:
-      - 3000:3000
+      - 8080:3000
     volumes:
       - './app:/app'
     env_file:
