@@ -37,11 +37,34 @@ services:
       context: ./
       dockerfile: ./app/Dockerfile
     container_name: app
-    command: sh -c "npm run dev"
+    command: sh -c "yarn run dev"
     ports:
       - 8080:3000
     volumes:
       - './app:/app'
+    env_file:
+      - .env
+    environment:
+      - LANG=C.UTF-8
+      - PYTHONIOENCODING=utf8
+      - ENV=development
+      - COMMIT_SHA1=development
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DATABASE_CREATION=create_preset_data
+    depends_on:
+      - db
+    tty: true
+  frontend:
+    build:
+      context: ./
+      dockerfile: ./frontend/Dockerfile
+    container_name: frontend
+    command: sh -c "yarn run dev"
+    ports:
+      - 3000:3000
+    volumes:
+      - './frontend:/src'
     env_file:
       - .env
     environment:
