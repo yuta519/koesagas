@@ -12,6 +12,7 @@ class Algolia(object):
         index.save_objects(
             [{
                 "objectID": transcript.id,
+                "episodeId": transcript.episode_id,
                 "text": transcript.text,
                 "startAt": transcript.start_at,
                 "endAt": transcript.end_at

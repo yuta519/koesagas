@@ -1,4 +1,3 @@
-import logging
 import os
 import uuid
 
@@ -13,9 +12,6 @@ def transcribe(filename, lang='English', model='small'):
 
     result = model.transcribe(filename, fp16=False, language=lang)
     print(result)
-
-    logging.warning('Watch out!')  # will print a message to the console
-    logging.info('I told you so')  # will not print anything
 
     data = []
     with open(f"{os.path.splitext(os.path.basename(filename))[0]}.txt", "w") as f:
