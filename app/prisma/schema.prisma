@@ -8,9 +8,19 @@ datasource db {
 }
 
 model Podcast {
-  id        String @id @default(cuid())
+  id        String   @id @default(cuid())
   name      String
   indexName String
   imageUrl  String
   createdAt DateTime
+}
+
+model Episode {
+  id               String   @id @default(cuid())
+  backnumber       Int
+  title            String
+  description      String
+  spotifyUrl       String
+  applePodcastyUrl String
+  postedAt         DateTime
 }
