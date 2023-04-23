@@ -8,10 +8,11 @@ datasource db {
 }
 
 model Podcast {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   name      String
   indexName String
   imageUrl  String
+  episodes  Episode[]
   createdAt DateTime
 }
 
@@ -23,4 +24,6 @@ model Episode {
   spotifyUrl       String
   applePodcastyUrl String
   postedAt         DateTime
+  podcast          Podcast  @relation(fields: [podcastId], references: [id])
+  podcastId        String
 }
