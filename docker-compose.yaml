@@ -27,7 +27,7 @@ services:
       - ENV=development
       - COMMIT_SHA1=development
       - DB_HOST=db
-      - DB_PORT=3306
+      - DB_PORT=5432
       - DATABASE_CREATION=create_preset_data
     depends_on:
       - db
@@ -37,7 +37,7 @@ services:
       context: ./
       dockerfile: ./app/Dockerfile
     container_name: app
-    command: sh -c "yarn run dev"
+    command: sh -c "yarn run dev &&  npx prisma migrate dev"
     ports:
       - 8080:3000
     volumes:
