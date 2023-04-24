@@ -14,13 +14,16 @@ export class PodcastServices {
       process.env.ALGOLIA_APP_ID,
       process.env.ALGOLIA_API_KEY
     );
-
     this.prisma = new PrismaClient();
   }
 
   public async FetchPodcasts() {
     return await this.prisma.podcast.findMany();
   }
+
+  public FetchById = async (id: string) => {
+    return await this.prisma.podcast.findUnique({ where: { id: id } });
+  };
 
   public async FetchTranscriptsBySearchText(
     this: PodcastServices,
@@ -52,14 +55,5 @@ export class PodcastServices {
         createdAt: "2020-10-19T00:00:00Z",
       },
     });
-  }
-
-  public async FetchUser() {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        email: "elsa@prisma.io",
-      },
-    });
-    return user;
   }
 }
