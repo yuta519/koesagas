@@ -22,7 +22,10 @@ export class PodcastServices {
   }
 
   public FetchById = async (id: string) => {
-    return await this.prisma.podcast.findUnique({ where: { id: id } });
+    return await this.prisma.podcast.findUnique({
+      where: { id: id },
+      include: { episodes: true },
+    });
   };
 
   public async FetchTranscriptsBySearchText(
