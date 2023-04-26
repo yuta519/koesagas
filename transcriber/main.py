@@ -10,13 +10,15 @@ def main():
     print("##################################")
     print(datetime.datetime.now())
     transcripts = transcribe_by_voice_file(
-        filepath='123.mp3',
-        episode_id=123,
+        filepath='127- 怠惰なエンジニア必聴！成長したいならまずは環境を変えたほうがいい【エンジニアからスタートアップ創業6】.mp3',
+        episode_id=127,
+        # lang='English',
         lang='Japanese',
         model_type='medium'
     )
     print(datetime.datetime.now())
     print("##################################")
+    # save_transcripts("js-party", transcripts)
     save_transcripts("vancouver-engineers", transcripts)
 
 

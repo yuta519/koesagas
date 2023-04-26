@@ -7,3 +7,11 @@ export const FetchAllPodcasts = async () => {
 
   return response.podcasts;
 };
+
+export const FetchPodcastById = async (id: string) => {
+  const response: { podcast: Podcast } = await fetch(
+    `http://localhost:8080/api/podcasts/${id}`
+  ).then((data) => data.json());
+
+  return response.podcast;
+};

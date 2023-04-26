@@ -9,8 +9,8 @@ export interface Podcast {
 
 export interface Episode {
   id: string;
-  backNumber: number;
   title: string;
+  backnumber: number;
   description: string;
   spotifyUrl: string;
   applePodcastyUrl: string;

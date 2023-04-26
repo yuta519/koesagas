@@ -42,6 +42,7 @@ export class PodcastServices {
       (podcast: any) =>
         new Transcript({
           id: podcast.objectID,
+          episodeId: podcast.episodeId,
           rawText: podcast.text,
           highlightText: podcast._highlightResult.text.value,
           startAt: podcast.startAt,
