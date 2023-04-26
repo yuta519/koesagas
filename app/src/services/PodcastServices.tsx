@@ -31,10 +31,13 @@ export class PodcastServices {
   public async FetchTranscriptsBySearchText(
     this: PodcastServices,
     idx: string,
-    searchText: string
+    searchText: string,
+    episodeId?: string
   ) {
     const index = this.algoria.client.initIndex(idx);
-    const result = await index.search(searchText);
+    const filterCondition =
+      episodeId !== "all" ? { filters: `episodeId=${episodeId}` } : {};
+    const result = await index.search(searchText, filterCondition);
     const podcasts = result.hits.map(
       (podcast: any) =>
         new Transcript({

@@ -15,16 +15,16 @@ const cors = Cors({
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   await runMiddleware(req, res, cors);
-  const { podcast_id, text } = req.query;
+  const { podcast_id, text, episodeId } = req.query;
 
   if (!text) throw new Error("text is not set");
 
   const podcastServices = new PodcastServices();
   const hits = await podcastServices.FetchTranscriptsBySearchText(
     podcast_id as string,
-    text as string
+    text as string,
+    episodeId as string
   );
-
   res.status(200).json(hits);
 };
 
