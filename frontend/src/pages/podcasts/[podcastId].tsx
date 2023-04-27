@@ -40,11 +40,13 @@ const Podcast = (req: NextApiRequest) => {
   });
 
   useEffect(() => {
-    (async () => {
-      const podcast = await FetchPodcastById(podcastId as string);
-      update((prev) => ({ ...prev, podcast }));
-    })();
-  }, [podcastId, state.podcast]);
+    if (podcastId) {
+      (async () => {
+        const podcast = await FetchPodcastById(podcastId as string);
+        update((prev) => ({ ...prev, podcast }));
+      })();
+    }
+  }, [podcastId]);
 
   const handleSearchBoxChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -53,8 +55,8 @@ const Podcast = (req: NextApiRequest) => {
     []
   );
 
+  // TODO: any
   const handleChangeEpisode = useCallback((event: any) => {
-    // TODO: any
     update((prev) => ({ ...prev, targetEpisodeId: event.target.value }));
   }, []);
 
