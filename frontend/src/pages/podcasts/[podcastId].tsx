@@ -26,6 +26,7 @@ export interface Transcript {
 
 const Podcast = (req: NextApiRequest) => {
   const router = useRouter();
+  const { podcastId } = router.query;
   const [state, update] = useState<{
     searchText: string;
     targetEpisodeId: string;
@@ -40,11 +41,10 @@ const Podcast = (req: NextApiRequest) => {
 
   useEffect(() => {
     (async () => {
-      const { podcastId } = router.query;
       const podcast = await FetchPodcastById(podcastId as string);
       update((prev) => ({ ...prev, podcast }));
     })();
-  }, [req.query, router.query]);
+  }, [podcastId, state.podcast]);
 
   const handleSearchBoxChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -53,12 +53,10 @@ const Podcast = (req: NextApiRequest) => {
     []
   );
 
-  const handleChangeEpisode = useCallback(
-    (event: ChangeEventHandler<HTMLSelectElement>) => {
-      update((prev) => ({ ...prev, targetEpisodeId: event.target.value }));
-    },
-    []
-  );
+  const handleChangeEpisode = useCallback((event: any) => {
+    // TODO: any
+    update((prev) => ({ ...prev, targetEpisodeId: event.target.value }));
+  }, []);
 
   const handleSearchBoxClick = async () => {
     if (state.podcast === null) return;

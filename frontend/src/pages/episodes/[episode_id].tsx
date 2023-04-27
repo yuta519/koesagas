@@ -30,7 +30,7 @@ const Episode = () => {
   );
 
   const handleSearchBoxClick = async () => {
-    const hits = await Search("vancouver-engineers", state.searchText);
+    const hits = await Search("vancouver-engineers", state.searchText, "all");
     const sortedHits = hits.sort(
       (x: Transcript, y: Transcript) => x.startAt - y.startAt
     );
