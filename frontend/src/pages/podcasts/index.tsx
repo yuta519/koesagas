@@ -27,8 +27,11 @@ const Podcasts = () => {
       <div className="grid grid-cols-3 gap-4">
         {state.podcasts
           ? state.podcasts.map((podcast) => (
-              <Link key={podcast.id} href={`podcasts/${podcast.id}`}>
-                <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+              <div
+                key={podcast.id}
+                className="mt-8 sm:mx-auto sm:w-full sm:max-w-md"
+              >
+                <Link href={`podcasts/${podcast.id}`}>
                   <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 container">
                     <h2 className="text-lg font-medium text-gray-800 mb-4">
                       {podcast.name}
@@ -41,8 +44,8 @@ const Podcasts = () => {
                       height="300"
                     />
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </div>
             ))
           : null}
       </div>
