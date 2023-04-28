@@ -64,7 +64,7 @@ const Podcast = (req: NextApiRequest) => {
     update((prev) => ({ ...prev, targetEpisodeId: event.target.value }));
   }, []);
 
-  const handleSearchBoxClick = async () => {
+  const handleSearchBoxClick = useCallback(async () => {
     if (state.podcast === null) return;
 
     const hits = await Search(
@@ -79,7 +79,7 @@ const Podcast = (req: NextApiRequest) => {
       ...prev,
       hits: sortedHits as Transcript[],
     }));
-  };
+  }, [state.podcast, state.searchText, state.targetEpisodeId]);
 
   return (
     <>
@@ -97,10 +97,9 @@ const Podcast = (req: NextApiRequest) => {
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           onChange={handleChangeEpisode}
         >
-          <option value="all" selected>
+          <option defaultValue="all" selected>
             All Episodes
           </option>
-          {/* {state.podcast?.episodes.map((episode) => ( */}
           {sortedEpisodes?.map((episode) => (
             <option key={episode.id} value={episode.backnumber}>
               {episode.backnumber} {episode.title}
