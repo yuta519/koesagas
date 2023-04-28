@@ -17,13 +17,13 @@ model Podcast {
 }
 
 model Episode {
-  id               String   @id @default(cuid())
-  backnumber       Int
-  title            String
-  description      String
-  spotifyUrl       String
-  applePodcastyUrl String
-  postedAt         DateTime
-  podcast          Podcast  @relation(fields: [podcastId], references: [id])
-  podcastId        String
+  id              String   @id @default(cuid())
+  backnumber      Int
+  title           String
+  description     String
+  spotifyUrl      String
+  applePodcastUrl String
+  postedAt        DateTime
+  podcast         Podcast  @relation(fields: [podcastId], references: [id])
+  podcastId       String
 }
