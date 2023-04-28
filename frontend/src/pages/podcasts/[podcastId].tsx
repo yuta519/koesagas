@@ -55,6 +55,10 @@ const Podcast = (req: NextApiRequest) => {
     []
   );
 
+  const sortedEpisodes = state.podcast?.episodes.sort((x, y) => {
+    return x.backnumber - y.backnumber;
+  });
+
   // TODO: any
   const handleChangeEpisode = useCallback((event: any) => {
     update((prev) => ({ ...prev, targetEpisodeId: event.target.value }));
@@ -96,7 +100,8 @@ const Podcast = (req: NextApiRequest) => {
           <option value="all" selected>
             All Episodes
           </option>
-          {state.podcast?.episodes.map((episode) => (
+          {/* {state.podcast?.episodes.map((episode) => ( */}
+          {sortedEpisodes?.map((episode) => (
             <option key={episode.id} value={episode.backnumber}>
               {episode.backnumber} {episode.title}
             </option>
