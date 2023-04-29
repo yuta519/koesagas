@@ -17,3 +17,14 @@ export interface Episode {
   podcastId: string;
   postedAt: Date;
 }
+
+export interface Transcript {
+  id: string;
+  episodeId: number;
+  rawText: string;
+  highlightText: string;
+  startAt: number;
+  endAt: number;
+  formatedStartAt: string;
+  formatedEndAt: string;
+}
