@@ -1,28 +1,12 @@
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { Search } from "@/components/features/Search";
 import { SearchBox } from "@/components/ui/SearchBox";
 import { NextApiRequest } from "next";
 import { FetchPodcastById } from "@/components/features/Podcasts";
-import { Podcast } from "@/types/Podcast";
-
-export interface Transcript {
-  id: string;
-  episodeId: number;
-  rawText: string;
-  highlightText: string;
-  startAt: number;
-  endAt: number;
-  formatedStartAt: string;
-  formatedEndAt: string;
-}
+import { Podcast, Transcript } from "@/types/Podcast";
+import Link from "next/link";
 
 const Podcast = (req: NextApiRequest) => {
   const router = useRouter();
@@ -123,7 +107,12 @@ const Podcast = (req: NextApiRequest) => {
               className="mt-8 sm:mx-auto sm:w-full sm:max-w-2xl"
             >
               <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                <p className="text-base">Episode: {hit.episodeId}</p>
+                <p className="text-base">
+                  Episode:
+                  <Link href={`/episodes/${hit.episodeId}`}>
+                    {hit.episodeId}
+                  </Link>
+                </p>
                 <p className="text-base">
                   Duration: {hit.formatedStartAt} - {hit.formatedEndAt}
                 </p>
