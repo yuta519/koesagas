@@ -8,3 +8,10 @@ export const Search = async (
   ).then((data) => data.json());
   return hitTranscripts;
 };
+
+export const FetchFullTranscription = async (episodeId: number) => {
+  const transcripts = await fetch(
+    `http://localhost:8080/api/episodes/${episodeId}/fulltransciption`
+  ).then((data) => data.json());
+  return transcripts;
+};
