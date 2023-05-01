@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+
+import { Transcript } from "@/entities/Transcript";
 import { AlgoriaClient } from "@/infras/AlgoriaClient";
 
 export class EpisodeServices {
@@ -19,4 +21,32 @@ export class EpisodeServices {
   public FetchById = async (episodeId: string) => {
     return await this.prisma.episode.findUnique({ where: { id: episodeId } });
   };
+
+  public async FetchFullTranscriptsById(idx: string, episodeId?: number) {
+    const index = this.algoria.client.initIndex(idx);
+    const result = await index.search("", {
+      filters: `episodeId=${episodeId}`,
+      hitsPerPage: 10000,
+    });
+    const transcripts = result.hits.map(
+      (podcast: any) =>
+        new Transcript({
+          id: podcast.objectID,
+          episodeId: podcast.episodeId,
+          rawText: podcast.text,
+          highlightText: podcast._highlightResult.text.value,
+          startAt: podcast.startAt,
+          endAt: podcast.endAt,
+        })
+    );
+    const sortedTranscripts = transcripts.sort((a, b) => {
+      const aStartAt = a.getStartAt();
+      const bStartAt = b.getStartAt();
+      if (aStartAt < bStartAt) return -1;
+      if (aStartAt > bStartAt) return 1;
+      return 0;
+    });
+
+    return sortedTranscripts;
+  }
 }
