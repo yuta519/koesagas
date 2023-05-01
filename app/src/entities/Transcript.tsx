@@ -36,6 +36,10 @@ export class Transcript {
     this.formatedEndAt = this.formatTime(endAt);
   }
 
+  public getStartAt(): number {
+    return this.startAt;
+  }
+
   private formatTime(time: number): string {
     const rawHour = Math.floor(time / 3600);
     const rawMin = Math.floor((time % 3600) / 60);
