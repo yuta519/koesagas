@@ -37,9 +37,13 @@ export class Transcript {
   }
 
   private formatTime(time: number): string {
-    const hour = Math.floor(time / 3600);
-    const min = Math.floor((time % 3600) / 60);
-    const sec = Math.floor(time % 60);
+    const rawHour = Math.floor(time / 3600);
+    const rawMin = Math.floor((time % 3600) / 60);
+    const rawSec = Math.floor(time % 60);
+
+    const hour = rawHour < 10 ? `0${rawHour}` : rawHour;
+    const min = rawMin < 10 ? `0${rawMin}` : rawMin;
+    const sec = rawSec < 10 ? `0${rawSec}` : rawSec;
 
     return `${hour}:${min}:${sec}`;
   }
