@@ -1,12 +1,15 @@
 import os
 
 from sqlalchemy import create_engine
-# from sqlalchemy import Column, MetaData, String, Table
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import DeclarativeBase
-# from sqlalchemy.sql import select
+
 
 Engine = create_engine(
-    f'postgresql+psycopg2://root:password@{os.environ["DB_HOST"]}:{os.environ["DB_PORT"]}/app',
+    (
+        f'postgresql+psycopg2://root:password@'
+        f'{os.environ["DB_HOST"]}:{os.environ["DB_PORT"]}/app'
+    ),
     isolation_level="AUTOCOMMIT"
 )
 
@@ -15,34 +18,17 @@ class Base(DeclarativeBase):
     ...
 
 
-# metadata = MetaData()
+class Podcast(Base):
+    __tablename__ = "Podcast"
 
-# podcasts = Table(
-#     'Podcast', metadata,
-#     Column('id', String, primary_key=True),
-#     Column('name', String),
-#     Column('indexName', String),
-#     Column('imageUrl', String),
-#     Column('createdAt', String)
-# )
+    id = Column(String, primary_key=True)
+    name = Column(String(100))
+    indexName = Column(String(30))
+    imageUrl = Column(String(1000), nullable=True)
+    createdAt = Column(String(100))
 
-# s = select(podcasts)
-# conn = engine.connect()
-# result = conn.execute(s)
-# print(result.fetchall())
-
-# from typing import Optional
-
-# from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import Column, Integer, String
-# from sqlalchemy.orm import Mapped
-# from sqlalchemy.orm import mapped_column
-# from sqlalchemy.orm import relationship
-from sqlalchemy.sql import select
-
-
-# class Base(DeclarativeBase):
-#     ...
+    def __repr__(self) -> str:
+        return f"User(id={self.id!r}, title={self.name!r})"
 
 
 class Episode(Base):
@@ -53,15 +39,9 @@ class Episode(Base):
     title = Column(String(100))
     description = Column(String(1000))
     spotifyUrl = Column(String(1000), nullable=True)
-    applePodcastyUrl = Column(String(1000), nullable=True)
+    applePodcastUrl = Column(String(1000), nullable=True)
     postedAt = Column(String(100))
     podcastId = Column(String, nullable=False)
 
     def __repr__(self) -> str:
         return f"User(id={self.id!r}, title={self.title!r})"
-
-
-s = select(Episode)
-conn = Engine.connect()
-result = conn.execute(s)
-print(result.fetchall())
