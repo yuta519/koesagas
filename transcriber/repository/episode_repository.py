@@ -1,36 +1,29 @@
-# from typing import Optional
+from sqlalchemy.sql import insert, select
+from sqlalchemy.exc import InvalidRequestError
 
-# from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import Column, Integer, String
-# from sqlalchemy.orm import Mapped
-# from sqlalchemy.orm import mapped_column
-# from sqlalchemy.orm import relationship
-from sqlalchemy.sql import select
-
-from infra.database import Base, Engine
+from entity.episode import Episode as EpisodeEntity
+from infra.database import Engine, Episode
 
 
-# class Base(DeclarativeBase):
-#     ...
+def fetch_all():
+    query = select(Episode)
+    conn = Engine.connect()
+    result = conn.execute(query)
+    return result.fetchall()
 
 
-class Episode(Base):
-    __tablename__ = "Episode"
-
-    id = Column(String, primary_key=True)
-    backnumber = Column(Integer)
-    title = Column(String(100))
-    description = Column(String(1000))
-    spotifyUrl = Column(String(1000), nullable=True)
-    applePodcastyUrl = Column(String(1000), nullable=True)
-    postedAt = Column(String(100))
-    podcastId = Column(String, nullable=False)
-
-    def __repr__(self) -> str:
-        return f"User(id={self.id!r}, title={self.title!r})"
-
-
-s = select(Episode)
-conn = Engine.connect()
-result = conn.execute(s)
-print(result.fetchall())
+def create(episode: EpisodeEntity):
+    try:
+        query = insert(Episode).values(
+            id=episode.id,
+            backnumber=episode.backnumber,
+            title=episode.title ,
+            description=episode.description,
+            spotifyUrl=episode.spotifyUrl,
+            applePodcastUrl=episode.applePodcastUrl,
+            postedAt=episode.postedAt,
+            podcastId=episode.podcastId
+        )
+        Engine.connect().execute(query)
+    except InvalidRequestError as err:
+        print(f"InvalidRequestError: {err}")

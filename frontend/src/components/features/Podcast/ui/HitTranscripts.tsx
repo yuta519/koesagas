@@ -4,7 +4,7 @@ import { Episode } from "@/types/Podcast";
 
 interface Props {
   episodes?: Episode[];
-  hits?: any[];
+  hits: any[];
 }
 
 export const HitTranscripts = ({ episodes, hits }: Props) => {
