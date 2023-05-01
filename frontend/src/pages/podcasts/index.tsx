@@ -15,8 +15,6 @@ const Podcasts = () => {
     })();
   }, []);
 
-  console.log(state.podcasts || []);
-
   return (
     <>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
