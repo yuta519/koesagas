@@ -14,7 +14,6 @@ const cors = Cors({
 const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   await runMiddleware(req, res, cors);
   const { episode_id } = req.query;
-  console.log(episode_id);
   const episodeServices = new EpisodeServices();
   const episode = await episodeServices.FetchById(episode_id as string);
 
