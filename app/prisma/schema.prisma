@@ -20,6 +20,7 @@ model Episode {
   id              String   @id @default(cuid())
   backnumber      Int
   title           String
+  srcUrl          String   @default("")
   description     String
   spotifyUrl      String
   applePodcastUrl String
