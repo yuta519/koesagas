@@ -1,21 +1,27 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
+import { Tab } from "@/components/ui/Tab";
 import {
   FetchEpisodeById,
   FetchFullTranscriptsById,
 } from "@/components/features/Episode/api/Episodes";
 import { Episode, Transcript } from "@/types/Podcast";
-import { useRouter } from "next/router";
 
 const Episode = () => {
   const router = useRouter();
   const { episodeId } = router.query;
-  const [state, update] = useState<{
+
+  interface State {
     episode?: Episode;
     transcripts: Transcript[];
-  }>({
+    currentTab: string;
+  }
+
+  const [state, update] = useState<State>({
     episode: undefined,
     transcripts: [],
+    currentTab: "About",
   });
 
   useEffect(() => {
@@ -26,6 +32,12 @@ const Episode = () => {
       update((prev) => ({ ...prev, episode, transcripts }));
     })();
   }, [episodeId]);
+
+  const tabs = ["About", "Transcripts"];
+
+  const handleChangeTab = (tab: string) => {
+    update((prev) => ({ ...prev, currentTab: tab }));
+  };
 
   return (
     <>
@@ -41,9 +53,17 @@ const Episode = () => {
           src="https://chrt.fm/track/D33GD1/rss.art19.com/episodes/865fd5ed-d8a1-46ee-9597-93a3bdb7d238.mp3#t=00:00:54,00:01:04"
         ></audio>
       </div>
+      <Tab
+        tabs={tabs}
+        currentTab={state.currentTab}
+        onChange={handleChangeTab}
+      />
       <div className="sm:mx-auto sm:w-full sm:max-w-5xl">
         {state.transcripts.map((transcript) => (
-          <div key={transcript.id} className="mt-5 bg-slate-200">
+          <div
+            key={transcript.id}
+            className="mt-5 px-2 py-5 bg-white sm:rounded-lg"
+          >
             <p className="">
               [{transcript.formatedStartAt}-{transcript.formatedEndAt}]
             </p>
