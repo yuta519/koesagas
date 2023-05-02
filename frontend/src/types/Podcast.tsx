@@ -11,6 +11,7 @@ export interface Episode {
   id: string;
   title: string;
   backnumber: number;
+  srcUrl: string;
   description: string;
   spotifyUrl: string;
   applePodcastyUrl: string;
