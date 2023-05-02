@@ -19,7 +19,7 @@ export const Tab = ({ tabs, currentTab, onChange }: Props) => {
 
   return (
     <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-2xl">
-      <div className="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400">
+      <div className="cursor-pointer text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400">
         <ul className="flex flex-wrap -mb-px">
           {tabs.map((tab) => (
             <li
