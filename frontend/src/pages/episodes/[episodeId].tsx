@@ -6,7 +6,8 @@ import {
   FetchEpisodeById,
   FetchFullTranscriptsById,
 } from "@/components/features/Episode/api/Episodes";
-import { Episode, Transcript } from "@/types/Podcast";
+import { Episode, Podcast, Transcript } from "@/types/Podcast";
+import { FetchPodcastById } from "@/components/features/Podcasts";
 
 const Episode = () => {
   const router = useRouter();
@@ -14,22 +15,27 @@ const Episode = () => {
 
   interface State {
     episode?: Episode;
+    podcast?: Podcast;
     transcripts: Transcript[];
     currentTab: string;
+    startAt: string;
   }
 
   const [state, update] = useState<State>({
     episode: undefined,
+    podcast: undefined,
     transcripts: [],
     currentTab: "About",
+    startAt: "00:00:00",
   });
 
   useEffect(() => {
     (async () => {
       if (episodeId === undefined) return;
       const episode = await FetchEpisodeById(episodeId as string);
+      const podcast = await FetchPodcastById(episode.podcastId as string);
       const transcripts = await FetchFullTranscriptsById(episodeId as string);
-      update((prev) => ({ ...prev, episode, transcripts }));
+      update((prev) => ({ ...prev, episode, podcast, transcripts }));
     })();
   }, [episodeId]);
 
@@ -39,9 +45,20 @@ const Episode = () => {
     update((prev) => ({ ...prev, currentTab: tab }));
   };
 
+  const handleChangeStartAt = (
+    event: React.MouseEvent<HTMLParagraphElement>
+  ) => {
+    const startAt = event.currentTarget.dataset.startat;
+    if (!startAt) return;
+    update((prev) => ({ ...prev, startAt }));
+  };
+
   return (
     <>
       <div className="sm:mx-auto sm:w-full sm:max-w-4xl">
+        <h3 className="mt-6 text-center text-base text-gray-500">
+          {state.podcast?.name}
+        </h3>
         <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           {state.episode?.title}
         </h1>
@@ -50,7 +67,7 @@ const Episode = () => {
         <audio
           controls
           className="my-10"
-          src="https://chrt.fm/track/D33GD1/rss.art19.com/episodes/865fd5ed-d8a1-46ee-9597-93a3bdb7d238.mp3#t=00:00:54,00:01:04"
+          src={`${state.episode?.srcUrl}#t=${state.startAt}`}
         ></audio>
       </div>
       <Tab
@@ -64,7 +81,11 @@ const Episode = () => {
             key={transcript.id}
             className="mt-5 px-2 py-5 bg-white sm:rounded-lg"
           >
-            <p className="">
+            <p
+              className=""
+              data-startat={transcript.formatedStartAt}
+              onClick={handleChangeStartAt}
+            >
               [{transcript.formatedStartAt}-{transcript.formatedEndAt}]
             </p>
             <p className="ml-10">{transcript.rawText}</p>
