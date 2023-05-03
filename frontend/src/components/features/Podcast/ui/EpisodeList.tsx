@@ -17,8 +17,12 @@ export const EpisodeList = ({ episodes }: Props) => {
             >
               <Link href={`/episodes/${episode.id}`}>
                 <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                  <div className="text-base">Episode: {episode.backnumber}</div>
-                  <div className="text-base">{episode.title}</div>
+                  <div className="text-base text-slate-500">
+                    Episode: {episode.backnumber}
+                  </div>
+                  <div className="mt-5 text-base font-bold">
+                    {episode.title}
+                  </div>
                   <div className="pt-4">{episode.description}</div>
                 </div>
               </Link>
