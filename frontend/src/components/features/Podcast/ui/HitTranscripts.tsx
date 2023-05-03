@@ -42,7 +42,7 @@ export const HitTranscripts = ({ episodes, hits }: Props) => {
                       })?.[hit.episodeId]
                     }`}
                   >
-                    <button className="mx-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                    <button className="mt-4 mx-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
                       To Episode
                     </button>
                   </Link>
