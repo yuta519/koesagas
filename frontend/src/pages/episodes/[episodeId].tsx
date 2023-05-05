@@ -7,11 +7,17 @@ import {
   FetchFullTranscriptsById,
 } from "@/components/features/Episode/api/Episodes";
 import { Episode, Podcast, Transcript } from "@/types/Podcast";
-import { FetchPodcastById } from "@/components/features/Podcasts";
+import { FetchPodcastById } from "@/components/features/Podcast/api/Podcasts";
+import { Summary } from "@/components/features/Summary";
 
 const Episode = () => {
   const router = useRouter();
   const { episodeId } = router.query;
+
+  interface summary {
+    duration: string;
+    text: string;
+  }
 
   interface State {
     episode?: Episode;
@@ -19,14 +25,16 @@ const Episode = () => {
     transcripts: Transcript[];
     currentTab: string;
     startAt: string;
+    summaryText: summary[];
   }
 
   const [state, update] = useState<State>({
     episode: undefined,
     podcast: undefined,
     transcripts: [],
-    currentTab: "About",
+    currentTab: "Transcripts",
     startAt: "00:00:00",
+    summaryText: [],
   });
 
   useEffect(() => {
@@ -39,7 +47,7 @@ const Episode = () => {
     })();
   }, [episodeId]);
 
-  const tabs = ["About", "Transcripts"];
+  const tabs = ["Transcripts", "Summary"];
 
   const handleChangeTab = (tab: string) => {
     update((prev) => ({ ...prev, currentTab: tab }));
@@ -51,6 +59,39 @@ const Episode = () => {
     const startAt = event.currentTarget.dataset.startat;
     if (!startAt) return;
     update((prev) => ({ ...prev, startAt }));
+  };
+
+  const seperateTranscriptsBy10min = () => {
+    let temp: { [key: string]: string } = {};
+    state.transcripts.forEach((transcript) => {
+      const key = String(Math.floor(transcript.startAt / 600));
+      temp[key]
+        ? (temp[key] += [transcript.rawText])
+        : (temp[key] = transcript.rawText);
+    });
+    return temp;
+  };
+
+  const handleClickSummary = async () => {
+    const transcripts = seperateTranscriptsBy10min();
+    let summaryText: any[] = [];
+    for (const key in transcripts) {
+      const summary = await Summary(transcripts[key]);
+      const duration = Number(key) * 10 + 10;
+      const time = `${duration - 10}-${duration}`;
+      summaryText.push({ duration: time, text: summary.summaryText });
+    }
+    update((prev) => ({ ...prev, summaryText }));
+    console.log(state.summaryText);
+  };
+
+  const test = () => {
+    console.log(state.summaryText);
+    state.summaryText.forEach((summary) => {
+      console.log(summary);
+      console.log(summary.text);
+      console.log(summary.duration);
+    });
   };
 
   return (
@@ -75,23 +116,51 @@ const Episode = () => {
         currentTab={state.currentTab}
         onChange={handleChangeTab}
       />
-      <div className="sm:mx-auto sm:w-full sm:max-w-5xl">
-        {state.transcripts.map((transcript) => (
-          <div
-            key={transcript.id}
-            className="mt-5 px-2 py-5 bg-white sm:rounded-lg"
-          >
-            <p
-              className=""
-              data-startat={transcript.formatedStartAt}
-              onClick={handleChangeStartAt}
+      {state.currentTab === "Transcripts" ? (
+        <div className="sm:mx-auto sm:w-full sm:max-w-5xl">
+          {state.transcripts.map((transcript) => (
+            <div
+              key={transcript.id}
+              className="mt-5 px-2 py-5 bg-white sm:rounded-lg cursor-pointer hover:bg-gray-50 sm:px-6"
             >
-              [{transcript.formatedStartAt}-{transcript.formatedEndAt}]
-            </p>
-            <p className="ml-10">{transcript.rawText}</p>
+              <p
+                className="text-sm font-medium text-gray-500"
+                data-startat={transcript.formatedStartAt}
+                onClick={handleChangeStartAt}
+              >
+                [{transcript.formatedStartAt}-{transcript.formatedEndAt}]
+              </p>
+              <p className="ml-10">{transcript.rawText}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <>
+          <div className="sm:mx-auto sm:w-full sm:max-w-5xl">
+            <div className="mt-5 px-2 py-5 bg-white sm:rounded-lg hover:bg-gray-50 sm:px-6">
+              <button onClick={handleClickSummary}>
+                Summarize Episode Transcript
+              </button>
+            </div>
+            <div className="mt-5 px-2 py-5 bg-white sm:rounded-lg hover:bg-gray-50 sm:px-6">
+              <button onClick={test}>test</button>
+            </div>
           </div>
-        ))}
-      </div>
+          <div className="sm:mx-auto sm:w-full sm:max-w-5xl">
+            {state.summaryText.map((summary) => (
+              <div
+                key={summary.duration}
+                className="mt-5 px-2 py-5 bg-white sm:rounded-lg cursor-pointer hover:bg-gray-50 sm:px-6"
+              >
+                <p className="text-sm font-medium text-gray-500">
+                  [{`${summary.duration} min`}]
+                </p>
+                <p className="mt-1 text-sm text-gray-900">{summary.text}</p>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </>
   );
 };
