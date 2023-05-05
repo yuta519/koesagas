@@ -4,7 +4,7 @@ import { NextApiRequest } from "next";
 
 import { Podcast, Transcript } from "@/types/Podcast";
 import { Search } from "@/components/features/Search";
-import { FetchPodcastById } from "@/components/features/Podcasts";
+import { FetchPodcastById } from "@/components/features/Podcast/api/Podcasts";
 import { EpisodeList } from "@/components/features/Podcast/ui/EpisodeList";
 import { SearchTranscripts } from "@/components/features/Podcast/ui/SearchTranscripts";
 import { Tab } from "@/components/ui/Tab";
@@ -21,7 +21,7 @@ const Podcast = (req: NextApiRequest) => {
     podcast: Podcast | null;
   }
   const [state, update] = useState<State>({
-    currentTab: "Transcripts",
+    currentTab: "About",
     searchText: "",
     targetEpisodeId: "all",
     hits: [],
@@ -37,10 +37,10 @@ const Podcast = (req: NextApiRequest) => {
     }
   }, [podcastId]);
 
-  const tabs = ["Transcripts", "Episodes"];
+  const tabs = ["About", "Transcripts", "Episodes"];
 
   const sortedEpisodes = state.podcast?.episodes.sort((x, y) => {
-    return x.backnumber - y.backnumber;
+    return y.backnumber - x.backnumber;
   });
 
   const handleChangeSearchBox = useCallback(
@@ -96,6 +96,7 @@ const Podcast = (req: NextApiRequest) => {
         currentTab={state.currentTab}
         onChange={handleChangeTab}
       ></Tab>
+      {state.currentTab === "About" ? () => {} : null}
       {state.currentTab === "Transcripts" ? (
         <SearchTranscripts
           episodes={sortedEpisodes}
@@ -105,9 +106,10 @@ const Podcast = (req: NextApiRequest) => {
           onClickSearchButton={handleClickSearchBox}
           hitTranscripts={state.hits}
         />
-      ) : (
+      ) : null}
+      {state.currentTab === "Episodes" ? (
         <EpisodeList episodes={sortedEpisodes} />
-      )}
+      ) : null}
     </>
   );
 };
