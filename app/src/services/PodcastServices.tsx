@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { AlgoriaClient } from "@/infras/AlgoriaClient";
 import { Transcript } from "@/entities/Transcript";
 
