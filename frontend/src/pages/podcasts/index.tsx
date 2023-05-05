@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { FetchAllPodcasts } from "@/components/features/Podcasts";
+import { FetchAllPodcasts } from "@/components/features/Podcast/api/Podcasts";
 import { Podcast } from "@/types/Podcast";
 
 const Podcasts = () => {
