@@ -137,14 +137,15 @@ const Episode = () => {
       ) : (
         <>
           <div className="sm:mx-auto sm:w-full sm:max-w-5xl">
-            <div className="mt-5 px-2 py-5 bg-white sm:rounded-lg hover:bg-gray-50 sm:px-6">
-              <button onClick={handleClickSummary}>
-                Summarize Episode Transcript
-              </button>
-            </div>
-            <div className="mt-5 px-2 py-5 bg-white sm:rounded-lg hover:bg-gray-50 sm:px-6">
+            <button
+              className="mt-4 mx-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+              onClick={handleClickSummary}
+            >
+              Summarize
+            </button>
+            {/* <div className="mt-5 px-2 py-5 bg-white sm:rounded-lg hover:bg-gray-50 sm:px-6">
               <button onClick={test}>test</button>
-            </div>
+            </div> */}
           </div>
           <div className="sm:mx-auto sm:w-full sm:max-w-5xl">
             {state.summaryText.map((summary) => (
